@@ -650,9 +650,13 @@ class EmpleadosStreamTests {
 			List<Departamento> listDep = depHome.findAll();
 			
 			//
+			var result = listDep
+					.stream()
+					.filter(d -> d.getEmpleados().size() > 2)
+					.map(d -> d.getNombre() + " | " + d.getEmpleados().size()) // No he tenido tiempo para formatearlo
+					.collect(toList());
 			
-			
-			listDep.forEach(System.out::println);
+			result.forEach(System.out::println);
 		
 			depHome.commitTransaction();
 		}
@@ -675,9 +679,12 @@ class EmpleadosStreamTests {
 			List<Departamento> listDep = depHome.findAll();
 			
 			//
+			/*var result = listDep
+					.stream()
+					.map(d -> d.getNombre() + " Departamentos: " + d.getEmpleados().stream().map();
 			
 			listDep.forEach(System.out::println);
-		
+		*/
 			depHome.commitTransaction();
 		}
 		catch (RuntimeException e) {
