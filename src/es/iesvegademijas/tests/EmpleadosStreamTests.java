@@ -2,6 +2,7 @@ package es.iesvegademijas.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -252,9 +253,8 @@ class EmpleadosStreamTests {
 			//
 			var result = listDep
 					.stream()
-					.sorted(comparingDouble(Departamento::getPresupuesto)) // No es el presupuesto actual
+					.sorted(comparingDouble(Departamento::getPresupuestoActual))
 					.map(d -> "Nombre: " +d.getNombre() + " Presupuesto actual: " + (d.getPresupuesto() - d.getGastos()));
-			
 			result.forEach(System.out::println);
 		
 			depHome.commitTransaction();
@@ -591,7 +591,7 @@ class EmpleadosStreamTests {
 			//
 			var result = listDep
 					.stream()
-					.map(d -> d.getNombre() + " | " + d.getEmpleados().size()) // No he tenido tiempo para formatearlo
+					.map(d -> d.getNombre() + " | " + d.getEmpleados().size()) 
 					.collect(toList());
 			
 			result.forEach(System.out::println);
@@ -669,6 +669,7 @@ class EmpleadosStreamTests {
 	/** 18. Lista todos los nombres de departamentos junto con los nombres y apellidos de los empleados. 
 	 * 
 	 */
+	@Test
 	void test18() {
 		
 		DepartamentoHome depHome = new DepartamentoHome();
@@ -679,12 +680,27 @@ class EmpleadosStreamTests {
 			List<Departamento> listDep = depHome.findAll();
 			
 			//
-			/*var result = listDep
+			var result = listDep
 					.stream()
-					.map(d -> d.getNombre() + " Departamentos: " + d.getEmpleados().stream().map();
-			
-			listDep.forEach(System.out::println);
-		*/
+					.map(d -> {
+					String resultado = d.getNombre() + " Empleados: ";
+					List<Empleado> empleados = new ArrayList<>();
+					empleados.addAll(d.getEmpleados());
+					var nombresEmp = empleados
+							.stream()
+							.map(e -> {
+								String nombreCompleto = e.getNombre() + " " + e.getApellido1();
+								if(e.getApellido2() != null) {
+									nombreCompleto += " " + e.getApellido2();
+								}
+								return "Nombre: " + nombreCompleto;
+							})
+							.collect(toList());
+					resultado += nombresEmp;
+					return resultado;
+					});
+			result.forEach(System.out::println);
+		
 			depHome.commitTransaction();
 		}
 		catch (RuntimeException e) {
@@ -696,6 +712,7 @@ class EmpleadosStreamTests {
 	/**
 	 * 19. Devuelve la media de empleados que trabajan en los departamentos
 	 */
+	@Test
 	void test19() {
 		
 		DepartamentoHome depHome = new DepartamentoHome();
@@ -706,8 +723,11 @@ class EmpleadosStreamTests {
 			List<Departamento> listDep = depHome.findAll();
 			
 			//
+			var result = listDep
+					.stream()
+					.collect(averagingDouble(d -> d.getEmpleados().size()));
 			
-			listDep.forEach(System.out::println);
+			System.out.println(result);
 		
 			depHome.commitTransaction();
 		}
@@ -720,6 +740,7 @@ class EmpleadosStreamTests {
 	/**
 	 * 20. Calcula el presupuesto máximo, mínimo  y número total de departamentos con un solo stream.
 	 */
+	@Test
 	void test20() {
 		
 		DepartamentoHome depHome = new DepartamentoHome();
@@ -730,8 +751,12 @@ class EmpleadosStreamTests {
 			List<Departamento> listDep = depHome.findAll();
 			
 			//
+			/*var result = listDep
+					.stream()
+					.map(d -> "Maximo: " + listDep.stream().collect(maxBy(comparing(Departamento::getPresupuesto))).map(d -> d.getPresupuesto()))
+					.collect(toList());
+			*/
 			
-			listDep.forEach(System.out::println);
 		
 			depHome.commitTransaction();
 		}

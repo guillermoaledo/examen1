@@ -72,6 +72,10 @@ public class Departamento implements java.io.Serializable {
 	public void setEmpleados(Set empleados) {
 		this.empleados = empleados;
 	}
+	
+	public double getPresupuestoActual() {
+		return this.getPresupuesto() - this.getGastos();
+	}
 
 	public String toString() {
 		return "Departamento [codigo=" + codigo + ", nombre=" + nombre + ", presupuesto=" + presupuesto + ", gastos="
