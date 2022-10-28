@@ -7,7 +7,7 @@ import java.util.HashSet;
 import org.hibernate.mapping.Set;
 import org.junit.jupiter.api.Test;
 
-import ies.vegademijas.genericos.Bag;
+import es.iesvegademijas.genericos.Bag;
 
 class BagTests {
 

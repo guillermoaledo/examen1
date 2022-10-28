@@ -1,4 +1,4 @@
-package ies.vegademijas.genericos;
+package es.iesvegademijas.genericos;
 
 import java.util.ArrayList;
 import java.util.HashSet;
